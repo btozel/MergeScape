@@ -8,3 +8,5 @@
 /Assets/AssetStoreTools*
 /ExportedObj/
 /build_BackUpThisFolder_ButDontShipItWithYourGame/
+.vscode/
+Assembly-CSharp.csproj
