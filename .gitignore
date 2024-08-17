@@ -1,0 +1,10 @@
+# Excluded directories
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/Assets/AssetStoreTools*
+/ExportedObj/
+/build_BackUpThisFolder_ButDontShipItWithYourGame/
