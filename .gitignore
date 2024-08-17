@@ -10,4 +10,4 @@
 /build_BackUpThisFolder_ButDontShipItWithYourGame/
 .vscode/
 Assembly-CSharp.csproj
-UserSettings
+UserSettings/
