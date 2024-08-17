@@ -11,3 +11,5 @@
 .vscode/
 Assembly-CSharp.csproj
 UserSettings/
+.DS_Store
+
