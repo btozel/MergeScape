@@ -12,7 +12,7 @@ public class CreatureCreationScript : MonoBehaviour
 
     private TMP_Text scoreText;
 
-    private int numberOfCreatures = 40;
+    private readonly int numberOfCreatures = 40;
 
 
     // Start is called before the first frame update
@@ -23,14 +23,15 @@ public class CreatureCreationScript : MonoBehaviour
         CreateCreatures();
     }
 
+
     private void CreateMainCreature()
     {
         GameObject mainCreature = CreateCreature();
         CreatureScript creatureScript = mainCreature.GetComponent<CreatureScript>();
-        Destroy(creatureScript);
-        mainCreature.AddComponent<MainCreatureLocomotion>();
-        // mainCreature.transform.localScale += new Vector3(2f,2f,2f);
-        mainCreature.transform.position = new Vector3(0f, 0f, 0f);
+        creatureScript.IsMainCreature = true;
+        creatureScript.SetColliderTriggerOn();
+        mainCreature.tag = "MainCreature";
+        mainCreature.transform.position = new Vector3(0f, 0.1f, 0f);
     }
 
 
@@ -45,10 +46,10 @@ public class CreatureCreationScript : MonoBehaviour
 
     private GameObject CreateCreature()
     {
-            Vector3 randomLocationInArena = GetRandomLocationInArena();
-            GameObject randomCreaturePrefabRef = creatures[Random.Range(0, creatures.Length)];
-            GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, randomCreaturePrefabRef.transform.rotation);
-            return creature;
+        Vector3 randomLocationInArena = GetRandomLocationInArena();
+        GameObject randomCreaturePrefabRef = creatures[Random.Range(0, creatures.Length)];
+        GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, randomCreaturePrefabRef.transform.rotation);
+        return creature;
     }
 
 
@@ -59,14 +60,8 @@ public class CreatureCreationScript : MonoBehaviour
     }
 
 
-    private int frameCount = 0;
-
-    void Update()
-    {
-        frameCount++;
-        if (frameCount % 90 == 0)
-        {
-            scoreText.text = Random.Range(0, 1000000).ToString();
-        }
+    public void SetScore(){
+        scoreText.text = string.Format("{0:0000000}", 1425);  
     }
+
 }

@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Obsolete("No longer used. Delete it.")]
 public class MainCreatureLocomotion : MonoBehaviour
 {
 
