@@ -458,7 +458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80041895261e947f18380b48a8ebc726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creature: {fileID: 8861429480900456983, guid: 187d055af75e44135ba3e87ce1187e85, type: 3}
+  creatures:
+  - {fileID: 8861429480900456983, guid: 187d055af75e44135ba3e87ce1187e85, type: 3}
+  - {fileID: 8861429480900456983, guid: 187d055af75e44135ba3e87ce1187e85, type: 3}
+  - {fileID: 8861429480900456983, guid: 187d055af75e44135ba3e87ce1187e85, type: 3}
   arena: {fileID: 297288983}
   score: {fileID: 1184404945}
 --- !u!1 &1184404945 stripped
