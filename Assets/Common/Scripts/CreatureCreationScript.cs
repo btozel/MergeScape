@@ -16,13 +16,11 @@ public class CreatureCreationScript : MonoBehaviour
     void Start()
     {
         scoreText = score.GetComponent<TMP_Text>();
-
         var renderer = arena.GetComponent<MeshRenderer>();
 
         for(int i = 0; i < numberOfCreatures; i++){
             Vector3 randomLocationInArena = new Vector3(Random.Range(-renderer.bounds.size.x, renderer.bounds.size.x), 0.1f, Random.Range(-renderer.bounds.size.z, renderer.bounds.size.z));
-            // This is where I'm creating actual GameObjects from the Prefab reference. 
-            GameObject c = Instantiate(creature, randomLocationInArena, Quaternion.identity);
+            Instantiate(creature, randomLocationInArena, Quaternion.identity);
         }
     }
 
