@@ -19,6 +19,8 @@ public class CreatureScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        duration = Random.Range(1f, 4f);
+        speed = Random.Range(0.5f, 1.5f);
         direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
     }
 
