@@ -9,9 +9,7 @@ public class CreatureCreationScript : MonoBehaviour
     public GameObject score;
 
     private TMP_Text scoreText;
-
     private int numberOfCreatures = 40;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +21,6 @@ public class CreatureCreationScript : MonoBehaviour
             Instantiate(creature, randomLocationInArena, Quaternion.identity);
         }
     }
-
 
     private int frameCount = 0;
 
