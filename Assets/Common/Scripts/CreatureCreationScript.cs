@@ -55,7 +55,7 @@ public class CreatureCreationScript : MonoBehaviour
     private Vector3 GetRandomLocationInArena()
     {
         var renderer = arena.GetComponent<MeshRenderer>();
-        return new(Random.Range(-renderer.bounds.size.x, renderer.bounds.size.x), 0.1f, Random.Range(-renderer.bounds.size.z, renderer.bounds.size.z));
+        return new(Random.Range((-renderer.bounds.size.x + 1) / 2f, (renderer.bounds.size.x - 1) / 2f), 0.1f, Random.Range((-renderer.bounds.size.z + 1) / 2f, (renderer.bounds.size.z - 1) / 2f));
     }
 
 
