@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CreatureScript : MonoBehaviour
 {
 
     private Vector3 direction; 
+
+    private float growingRate = 1.1f;
+    private float shrinkingRate = 0.9f;
+
 
     private float speed = 1f; 
 
@@ -78,6 +83,7 @@ public class CreatureScript : MonoBehaviour
         if (CompareTag("MainCreature"))
         {
             Destroy(other.gameObject);
+            GetBigger();
         }
     }
 
@@ -99,5 +105,21 @@ public class CreatureScript : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
         elapsedTime += Time.deltaTime;
     }
+
+
+    private void GetBigger(){
+        if(IsMainCreature){
+            transform.localScale = new Vector3(transform.localScale.x*growingRate,transform.localScale.y, transform.localScale.z*growingRate);
+        }
+    }
+
+
+    private void GetSmaller(){
+        if(IsMainCreature){
+            transform.localScale = new Vector3(transform.localScale.x*shrinkingRate,transform.localScale.y, transform.localScale.z*shrinkingRate);
+        }
+    }
+
+
 
 }
