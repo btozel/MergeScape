@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class CreatureCreationScript : MonoBehaviour
     private TMP_Text scoreText;
 
     private readonly int numberOfCreatures = 40;
+
+    public Dictionary<string , int> creaturesTable = new Dictionary<string, int>();
 
 
     // Start is called before the first frame update
@@ -49,6 +52,13 @@ public class CreatureCreationScript : MonoBehaviour
         Vector3 randomLocationInArena = GetRandomLocationInArena();
         GameObject randomCreaturePrefabRef = creatures[Random.Range(0, creatures.Length)];
         GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, randomCreaturePrefabRef.transform.rotation);
+        string nameOfCreature = creature.name;
+        if(creaturesTable.ContainsKey(nameOfCreature)){
+            int current = creaturesTable[nameOfCreature];
+            creaturesTable[nameOfCreature] = current+1;
+        }else{
+            creaturesTable.Add(nameOfCreature, 1);
+        }
         return creature;
     }
 
