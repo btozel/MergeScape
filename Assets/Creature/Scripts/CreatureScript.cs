@@ -26,16 +26,27 @@ public class CreatureScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (elapsedTime < duration)
+    {   
+        if((transform.position.x <= -9.5 || transform.position.x >= 9.5) || (transform.position.z <= -4.5 || transform.position.z >= 4.5)){
+            Redirect();
+            Move();
+        }
+        else if (elapsedTime < duration)
         {
+            Move();
+        }else{
+            Redirect();
+        }
+        
+    }
+
+    void Redirect(){
+        direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+        elapsedTime = 0f;
+    }
+
+    void Move(){
             transform.position += direction * speed * Time.deltaTime;
             elapsedTime += Time.deltaTime;
-        }
-        else
-        {
-            direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-            elapsedTime = 0f;
-        }
     }
 }
