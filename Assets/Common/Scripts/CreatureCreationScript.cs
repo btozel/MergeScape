@@ -47,7 +47,7 @@ public class CreatureCreationScript : MonoBehaviour
     {
             Vector3 randomLocationInArena = GetRandomLocationInArena();
             GameObject randomCreaturePrefabRef = creatures[Random.Range(0, creatures.Length)];
-            GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, Quaternion.identity);
+            GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, randomCreaturePrefabRef.transform.rotation);
             return creature;
     }
 
