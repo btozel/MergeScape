@@ -84,7 +84,7 @@ public class CreatureCreationScript : MonoBehaviour
 
 
     private GameObject NextCreature(){
-        GameObject nextOne = creatures[0];
+        GameObject nextOne = null;
         int total = creaturesTable.Count;
         List<String> keyList = new List<string>(creaturesTable.Keys);
         int randomCreatureIndex = UnityEngine.Random.Range(0,total - 1);
