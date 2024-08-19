@@ -14,11 +14,15 @@ public class CreatureCreationScript : MonoBehaviour
 
     private TMP_Text scoreText;
 
+    public GameObject gameOverText;
+
     private readonly int numberOfCreatures = 40;
 
     public Dictionary<string, int> creaturesTable = new();
 
     public static Action<GameObject> MainCreatureCollided;
+
+    public static Action GameOverEvent;
 
 
     // Start is called before the first frame update
@@ -26,6 +30,7 @@ public class CreatureCreationScript : MonoBehaviour
     {
         scoreText = score.GetComponent<TMP_Text>();
         MainCreatureCollided += HandleMainCreatureCollision;
+        GameOverEvent += GameOver;
         CreateMainCreature();
         CreateCreatures();
     }
@@ -73,7 +78,7 @@ public class CreatureCreationScript : MonoBehaviour
     private Vector3 GetRandomLocationInArena()
     {
         var renderer = arena.GetComponent<MeshRenderer>();
-        return new(UnityEngine.Random.Range((-renderer.bounds.size.x + 1) / 2f, (renderer.bounds.size.x - 1) / 2f), 0.1f, Random.Range((-renderer.bounds.size.z + 1) / 2f, (renderer.bounds.size.z - 1) / 2f));
+        return new(UnityEngine.Random.Range((-renderer.bounds.size.x + 1) / 2f, (renderer.bounds.size.x - 1) / 2f), 0.1f, UnityEngine.Random.Range((-renderer.bounds.size.z + 1) / 2f, (renderer.bounds.size.z - 1) / 2f));
     }
 
 
@@ -96,6 +101,12 @@ public class CreatureCreationScript : MonoBehaviour
         {
             creaturesTable[creature.name] = creaturesTable[creature.name] - 1;
         }
+    }
+
+
+    private void GameOver()
+    {
+        gameOverText.SetActive(true);
     }
 
 
