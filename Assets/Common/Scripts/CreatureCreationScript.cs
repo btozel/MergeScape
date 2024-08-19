@@ -22,6 +22,8 @@ public class CreatureCreationScript : MonoBehaviour
 
     private readonly int numberOfCreatures = 40;
 
+    private readonly int pointsPerMerge = 50;
+
     public Dictionary<string, int> creaturesTable = new();
 
     public static Action<GameObject> MainCreatureCollided;
@@ -30,6 +32,10 @@ public class CreatureCreationScript : MonoBehaviour
     public static Action GameOverEvent;
 
     private GameObject mainCreature;
+
+    private int timeSpentPlaying = 0;
+
+    private bool isGameOver = false;
 
 
     // Start is called before the first frame update
@@ -41,6 +47,17 @@ public class CreatureCreationScript : MonoBehaviour
         GameOverEvent += GameOver;
         CreateCreatures();
         CreateMainCreature();
+        AddToScore(0);
+    }
+
+
+    void Update()
+    {
+        int secondsThusFar = (int)Math.Round(Time.timeSinceLevelLoad);
+        if(timeSpentPlaying < secondsThusFar){
+            timeSpentPlaying = secondsThusFar;
+            AddToScore(-1);
+        }
     }
 
 
@@ -119,16 +136,11 @@ public class CreatureCreationScript : MonoBehaviour
     }
 
 
-    public void SetScore()
-    {
-        scoreText.text = string.Format("{0:0000000}", 1425);
-    }
-
-
     private void HandleMainCreatureCollision(GameObject collidedCreature)
     {
         RemoveCreatureFromGame(collidedCreature);
         ChangeToAnotherCreature();
+        AddToScore(pointsPerMerge);
     }
 
 
@@ -173,8 +185,18 @@ public class CreatureCreationScript : MonoBehaviour
 
     private void GameOver()
     {
+        isGameOver = true;
         gameOverText.SetActive(true);
     }
 
+
+    private void AddToScore(int amount)
+    {
+        if(!isGameOver){
+            int currentScore = int.Parse(scoreText.text);
+            int scoreToSet = Math.Max(currentScore + amount, 0);
+            scoreText.text = string.Format("{0:000}", scoreToSet);
+        }
+    }
 
 }
