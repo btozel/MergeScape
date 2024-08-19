@@ -51,6 +51,14 @@ public class CreatureScript : MonoBehaviour
 
     void Update()
     {
+        if(numberOfLives == 0)
+        {
+            if(IsMainCreature){
+                transform.Rotate(Vector3.up * Time.deltaTime * 400f);
+            }
+            return;
+        }
+
         if (!IsMainCreature)
         {
             if ((transform.position.x <= -9.5 || transform.position.x >= 9.5) || (transform.position.z <= -4.5 || transform.position.z >= 4.5))
