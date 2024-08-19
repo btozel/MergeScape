@@ -75,6 +75,7 @@ public class CreatureCreationScript : MonoBehaviour
         Vector3 randomLocationInArena = GetRandomLocationInArena();
         GameObject creature = Instantiate(prefabRef, randomLocationInArena, prefabRef.transform.rotation);
         string nameOfCreature = creature.name;
+        creature.GetComponent<CreatureScript>().SetArenaBounds(arena.GetComponent<Renderer>().bounds.size);
 
         if (!isMainCreature)
         {
