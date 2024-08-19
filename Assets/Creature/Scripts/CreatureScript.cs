@@ -3,6 +3,7 @@ using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 using Random = UnityEngine.Random;
 using TMPro;
+using System.Numerics;
 
 public class CreatureScript : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CreatureScript : MonoBehaviour
     private Vector3 originalSize = new(0.5f, 0.1f, 0.5f);
 
     private Vector3 growthAmount = new(0.1f, 0f, 0.1f);
+
+    private Vector3 arenaBound;
 
     private float speed = 1f;
 
@@ -82,19 +85,21 @@ public class CreatureScript : MonoBehaviour
 
             Vector3 pos = transform.position;
 
-            if (Input.GetKey(KeyCode.UpArrow))
+            Vector3 bounds = GetComponent<Renderer>().bounds.size;
+
+            if (Input.GetKey(KeyCode.UpArrow) && pos.z < arenaBound.z/2f - bounds.z/2f)
             {
                 pos.z += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeyCode.DownArrow) && pos.z > -arenaBound.z/2f + bounds.z/2f)
             {
                 pos.z -= speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (Input.GetKey(KeyCode.RightArrow) && pos.x < arenaBound.x/2f - bounds.z/2f)
             {
                 pos.x += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow) && pos.x > -arenaBound.x/2f + bounds.z/2f)
             {
                 pos.x -= speed * Time.deltaTime;
             }
@@ -102,6 +107,10 @@ public class CreatureScript : MonoBehaviour
             transform.position = pos;
         }
     }
+
+    public void SetArenaBounds(Vector3 arenaVector3){
+        arenaBound = arenaVector3;
+    } 
 
 
     void OnTriggerEnter(Collider other)
