@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 public class CreatureCreationScript : MonoBehaviour
@@ -77,6 +80,21 @@ public class CreatureCreationScript : MonoBehaviour
             creaturesTable.Add(nameOfCreature, 1);
         }
         return creature;
+    }
+
+
+    private GameObject NextCreature(){
+        GameObject nextOne = creatures[0];
+        int total = creaturesTable.Count;
+        List<String> keyList = new List<string>(creaturesTable.Keys);
+        int randomCreatureIndex = UnityEngine.Random.Range(0,total - 1);
+        String nameOfTheCreature = keyList[randomCreatureIndex];
+        for(int i = 0; i < numberOfCreatures; i++){
+            if(creatures[i].name == nameOfTheCreature){
+                nextOne = creatures[i];
+            }
+        }
+        return nextOne;
     }
 
 
