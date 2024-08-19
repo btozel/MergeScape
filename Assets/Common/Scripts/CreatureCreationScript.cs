@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -28,6 +29,8 @@ public class CreatureCreationScript : MonoBehaviour
 
     public static Action GameOverEvent;
 
+    private GameObject mainCreature;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,14 +39,14 @@ public class CreatureCreationScript : MonoBehaviour
         MainCreatureCollided += HandleMainCreatureCollision;
         MainCreatureLiveCountUpdateEvent += MainCreatureLiveCountUpdate;
         GameOverEvent += GameOver;
-        CreateMainCreature();
         CreateCreatures();
+        CreateMainCreature();
     }
 
 
     private void CreateMainCreature()
     {
-        GameObject mainCreature = CreateCreature();
+        mainCreature = CreateCreature(GetPrefabReferenceFromExistingCreatures(), true);
         CreatureScript creatureScript = mainCreature.GetComponent<CreatureScript>();
         creatureScript.IsMainCreature = true;
         creatureScript.SetColliderTriggerOn();
@@ -56,42 +59,55 @@ public class CreatureCreationScript : MonoBehaviour
     {
         for (int i = 0; i < numberOfCreatures; i++)
         {
-            CreateCreature();
+            CreateCreature(GetRandomCreaturePrefabRef(), false);
         }
     }
 
 
-    private GameObject CreateCreature()
+    private GameObject GetRandomCreaturePrefabRef()
+    {
+        return creatures[UnityEngine.Random.Range(0, creatures.Length)];
+    }
+
+
+    private GameObject CreateCreature(GameObject prefabRef, bool isMainCreature)
     {
         Vector3 randomLocationInArena = GetRandomLocationInArena();
-        GameObject randomCreaturePrefabRef = creatures[UnityEngine.Random.Range(0, creatures.Length)];
-        GameObject creature = Instantiate(randomCreaturePrefabRef, randomLocationInArena, randomCreaturePrefabRef.transform.rotation);
+        GameObject creature = Instantiate(prefabRef, randomLocationInArena, prefabRef.transform.rotation);
         string nameOfCreature = creature.name;
-        if (creaturesTable.ContainsKey(nameOfCreature))
+
+        if (!isMainCreature)
         {
-            int current = creaturesTable[nameOfCreature];
-            creaturesTable[nameOfCreature] = current + 1;
+            if (creaturesTable.ContainsKey(nameOfCreature))
+            {
+                int current = creaturesTable[nameOfCreature];
+                creaturesTable[nameOfCreature] = current + 1;
+            }
+            else
+            {
+                creaturesTable.Add(nameOfCreature, 1);
+            }
         }
-        else
-        {
-            creaturesTable.Add(nameOfCreature, 1);
-        }
+
         return creature;
     }
 
 
-    private GameObject NextCreature(){
-        GameObject nextOne = null;
-        int total = creaturesTable.Count;
-        List<String> keyList = new List<string>(creaturesTable.Keys);
-        int randomCreatureIndex = UnityEngine.Random.Range(0,total - 1);
-        String nameOfTheCreature = keyList[randomCreatureIndex];
-        for(int i = 0; i < numberOfCreatures; i++){
-            if(creatures[i].name == nameOfTheCreature){
-                nextOne = creatures[i];
+    private GameObject GetPrefabReferenceFromExistingCreatures()
+    {
+        GameObject prefabRef = null;
+        int total = creaturesTable.Keys.Count;
+        List<string> keyList = new List<string>(creaturesTable.Keys);
+        int randomCreatureIndex = UnityEngine.Random.Range(0, total);
+        string nameOfTheCreature = keyList[randomCreatureIndex].Replace("(Clone)", string.Empty);
+        for (int i = 0; i < creatures.Length; i++)
+        {
+            if (creatures[i].name.Equals(nameOfTheCreature))
+            {
+                prefabRef = creatures[i];
             }
         }
-        return nextOne;
+        return prefabRef;
     }
 
 
@@ -111,6 +127,25 @@ public class CreatureCreationScript : MonoBehaviour
     private void HandleMainCreatureCollision(GameObject collidedCreature)
     {
         RemoveCreatureFromGame(collidedCreature);
+        ChangeToAnotherCreature();
+    }
+
+
+    private void ChangeToAnotherCreature()
+    {
+        Vector3 prevMainCreaturePos = new Vector3(mainCreature.transform.position.x, mainCreature.transform.position.y, mainCreature.transform.position.z);
+        Vector3 prevMainCreatureScale = new Vector3(mainCreature.transform.localScale.x, mainCreature.transform.localScale.y, mainCreature.transform.localScale.z);
+        int remainingLives = mainCreature.GetComponent<CreatureScript>().numberOfLives;
+        int prevGrowthStep = mainCreature.GetComponent<CreatureScript>().currentGrowthStep;
+
+        Destroy(mainCreature);
+
+        CreateMainCreature();
+
+        mainCreature.transform.position = prevMainCreaturePos;
+        mainCreature.transform.localScale = prevMainCreatureScale;
+        mainCreature.GetComponent<CreatureScript>().currentGrowthStep = prevGrowthStep;
+        mainCreature.GetComponent<CreatureScript>().numberOfLives = remainingLives;
     }
 
 
@@ -126,6 +161,11 @@ public class CreatureCreationScript : MonoBehaviour
         if (creaturesTable.ContainsKey(creature.name))
         {
             creaturesTable[creature.name] = creaturesTable[creature.name] - 1;
+        }
+
+        if (creaturesTable[creature.name] == 0)
+        {
+            creaturesTable.Remove(creature.name);
         }
     }
 
