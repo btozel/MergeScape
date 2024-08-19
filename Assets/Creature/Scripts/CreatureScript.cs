@@ -21,9 +21,9 @@ public class CreatureScript : MonoBehaviour
 
     public bool IsMainCreature { get; set; } = false;
 
-    private int currentGrowthStep = 0;
+    public int currentGrowthStep { get; set; } = 0;
 
-    private int numberOfLives = 3;
+    public int numberOfLives { get; set; } = 3;
 
     private float immunityTimeSpan = 2f;
     private bool isInImmunity = true;
@@ -41,7 +41,7 @@ public class CreatureScript : MonoBehaviour
         }
         else
         {
-            speed = 1.5f;
+            speed = 2f;
         }
     }
 
@@ -110,9 +110,8 @@ public class CreatureScript : MonoBehaviour
         {
             if (name.Equals(other.name))
             {
-                CreatureCreationScript.MainCreatureCollided.Invoke(other.gameObject);
-                Debug.Log("Name: " + name + "Other: " + other.name);
                 GetBigger();
+                CreatureCreationScript.MainCreatureCollided.Invoke(other.gameObject);
             }
             else
             {
@@ -163,6 +162,7 @@ public class CreatureScript : MonoBehaviour
         if (IsMainCreature)
         {
            numberOfLives--;
+           currentGrowthStep = (int)Math.Round(currentGrowthStep * 0.66f);
 
             if (numberOfLives == 0)
             {
