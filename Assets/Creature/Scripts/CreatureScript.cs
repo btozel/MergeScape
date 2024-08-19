@@ -6,7 +6,7 @@ public class CreatureScript : MonoBehaviour
 
     private Vector3 direction;
 
-    private Vector3 originalSize = new(1f, 0.1f, 1f);
+    private Vector3 originalSize = new(0.5f, 0.1f, 0.5f);
 
     private Vector3 growthAmount = new(0.1f, 0f, 0.1f);
 
@@ -91,6 +91,7 @@ public class CreatureScript : MonoBehaviour
             if (name.Equals(other.name))
             {
                 CreatureCreationScript.MainCreatureCollided.Invoke(other.gameObject);
+                Debug.Log("Name: " + name + "Other: " + other.name);
                 GetBigger();
             }
             else
