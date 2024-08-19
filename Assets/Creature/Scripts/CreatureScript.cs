@@ -31,6 +31,8 @@ public class CreatureScript : MonoBehaviour
     private float immunityTimeSpan = 2f;
     private bool isInImmunity = true;
 
+    public GameObject birthAnimation;
+
 
     void Start()
     {
@@ -44,6 +46,7 @@ public class CreatureScript : MonoBehaviour
         }
         else
         {
+            birthAnimation.SetActive(true);
             speed = 2f;
         }
     }
