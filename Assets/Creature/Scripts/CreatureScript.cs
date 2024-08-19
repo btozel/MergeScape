@@ -1,5 +1,8 @@
+using System;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
+using Random = UnityEngine.Random;
+using TMPro;
 
 public class CreatureScript : MonoBehaviour
 {
@@ -10,8 +13,6 @@ public class CreatureScript : MonoBehaviour
 
     private Vector3 growthAmount = new(0.1f, 0f, 0.1f);
 
-    private Vector3 shrinkAmount = new(-0.2f, 0f, -0.2f);
-
     private float speed = 1f;
 
     private float duration = 2f;
@@ -21,8 +22,11 @@ public class CreatureScript : MonoBehaviour
     public bool IsMainCreature { get; set; } = false;
 
     private int currentGrowthStep = 0;
-    private int currentShrinkStep = 0;
-    private int maxShrinkStep = 3;
+
+    private int numberOfLives = 3;
+
+    private float immunityTimeSpan = 2f;
+    private bool isInImmunity = true;
 
 
     void Start()
@@ -32,6 +36,8 @@ public class CreatureScript : MonoBehaviour
             duration = Random.Range(1f, 4f);
             speed = Random.Range(0.5f, 1.5f);
             direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+
+            CreatureCreationScript.MainCreatureLiveCountUpdateEvent.Invoke(numberOfLives);
         }
         else
         {
@@ -56,10 +62,24 @@ public class CreatureScript : MonoBehaviour
             else
             {
                 Redirect();
-            }
+            }            
         }
         else
         {
+            if(isInImmunity)
+            {
+                Debug.Log("In immunity");
+                if(immunityTimeSpan <= 0f)
+                {
+                    immunityTimeSpan = 3f;
+                    isInImmunity = false;
+                    Debug.Log("Not In immunity");
+                }else
+                {
+                    immunityTimeSpan -= Time.deltaTime;
+                }
+            }
+
             Vector3 pos = transform.position;
 
             if (Input.GetKey(KeyCode.UpArrow))
@@ -96,7 +116,11 @@ public class CreatureScript : MonoBehaviour
             }
             else
             {
-                GetSmaller();
+                if(!isInImmunity)
+                {
+                    GetSmaller();
+                    isInImmunity = true;            
+                }
             }
         }
     }
@@ -138,27 +162,33 @@ public class CreatureScript : MonoBehaviour
     {
         if (IsMainCreature)
         {
-            if (currentShrinkStep >= maxShrinkStep)
+           numberOfLives--;
+
+            if (numberOfLives == 0)
             {
                 //TODO: Show end results. 
                 Debug.Log("Game Over");
                 CreatureCreationScript.GameOverEvent.Invoke();
             }
-            else if (transform.localScale == originalSize)
-            {
-                // Must mean the main creature collided with another at original size
-                // Thus just increment currentShrinkStep; closer to death.
-                currentShrinkStep++;
-            }
             else
             {
                 // The main creature must be bigger than original and still has lives. 
                 // Just shrink.
-                currentShrinkStep++;
-                Vector3 scaleBy = currentShrinkStep * shrinkAmount;
-                Vector3 scaleTo = originalSize + scaleBy;
-                transform.localScale = scaleTo;
+                Vector3 scaleBy;
+                Vector3 twoThirds = new(transform.localScale.x * .66f, transform.localScale.y, transform.localScale.z * 0.66f);
+                if(twoThirds.x < originalSize.x)
+                {
+                    scaleBy = originalSize;
+                }
+                else
+                {
+                    scaleBy = twoThirds;
+                }
+
+                transform.localScale = scaleBy;
             }
+
+            CreatureCreationScript.MainCreatureLiveCountUpdateEvent.Invoke(numberOfLives);
 
         }
     }

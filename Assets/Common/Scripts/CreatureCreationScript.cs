@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CreatureCreationScript : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class CreatureCreationScript : MonoBehaviour
 
     private TMP_Text scoreText;
 
+    public TMP_Text livesText;
+
     public GameObject gameOverText;
 
     private readonly int numberOfCreatures = 40;
@@ -21,6 +24,7 @@ public class CreatureCreationScript : MonoBehaviour
     public Dictionary<string, int> creaturesTable = new();
 
     public static Action<GameObject> MainCreatureCollided;
+    public static Action<int> MainCreatureLiveCountUpdateEvent;
 
     public static Action GameOverEvent;
 
@@ -30,6 +34,7 @@ public class CreatureCreationScript : MonoBehaviour
     {
         scoreText = score.GetComponent<TMP_Text>();
         MainCreatureCollided += HandleMainCreatureCollision;
+        MainCreatureLiveCountUpdateEvent += MainCreatureLiveCountUpdate;
         GameOverEvent += GameOver;
         CreateMainCreature();
         CreateCreatures();
@@ -91,6 +96,12 @@ public class CreatureCreationScript : MonoBehaviour
     private void HandleMainCreatureCollision(GameObject collidedCreature)
     {
         RemoveCreatureFromGame(collidedCreature);
+    }
+
+
+    private void MainCreatureLiveCountUpdate(int remainingLives)
+    {
+        livesText.text = $"Lives: {remainingLives}";
     }
 
 
