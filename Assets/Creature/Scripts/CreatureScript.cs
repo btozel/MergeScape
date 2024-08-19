@@ -1,22 +1,28 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using Vector3 = UnityEngine.Vector3;
 
 public class CreatureScript : MonoBehaviour
 {
 
-    private Vector3 direction; 
+    private Vector3 direction;
 
-    private float growingRate = 1.1f;
-    private float shrinkingRate = 0.9f;
+    private Vector3 originalSize = new(1f, 0.1f, 1f);
 
+    private Vector3 growthAmount = new(0.1f, 0f, 0.1f);
 
-    private float speed = 1f; 
+    private Vector3 shrinkAmount = new(-0.2f, 0f, -0.2f);
 
-    private float duration = 2f; 
+    private float speed = 1f;
+
+    private float duration = 2f;
 
     private float elapsedTime = 0f;
 
     public bool IsMainCreature { get; set; } = false;
+
+    private int currentGrowthStep = 0;
+    private int currentShrinkStep = 0;
+    private int maxShrinkStep = 3;
 
 
     void Start()
@@ -82,13 +88,21 @@ public class CreatureScript : MonoBehaviour
     {
         if (CompareTag("MainCreature"))
         {
-            Destroy(other.gameObject);
-            GetBigger();
+            if (name.Equals(other.name))
+            {
+                CreatureCreationScript.MainCreatureCollided.Invoke(other.gameObject);
+                GetBigger();
+            }
+            else
+            {
+                GetSmaller();
+            }
         }
     }
 
 
-    public void SetColliderTriggerOn(){
+    public void SetColliderTriggerOn()
+    {
         GetComponent<BoxCollider>().isTrigger = true;
     }
 
@@ -107,19 +121,46 @@ public class CreatureScript : MonoBehaviour
     }
 
 
-    private void GetBigger(){
-        if(IsMainCreature){
-            transform.localScale = new Vector3(transform.localScale.x*growingRate,transform.localScale.y, transform.localScale.z*growingRate);
+    private void GetBigger()
+    {
+        if (IsMainCreature)
+        {
+            currentGrowthStep++;
+            Vector3 scaleBy = currentGrowthStep * growthAmount;
+            Vector3 scaleTo = originalSize + scaleBy;
+            transform.localScale = scaleTo;
         }
     }
 
 
-    private void GetSmaller(){
-        if(IsMainCreature){
-            transform.localScale = new Vector3(transform.localScale.x*shrinkingRate,transform.localScale.y, transform.localScale.z*shrinkingRate);
+    private void GetSmaller()
+    {
+        if (IsMainCreature)
+        {
+            if (currentShrinkStep >= maxShrinkStep)
+            {
+                //TODO: Show end results. 
+                Debug.Log("Game Over");
+                CreatureCreationScript.GameOverEvent.Invoke();
+            }
+            else if (transform.localScale == originalSize)
+            {
+                // Must mean the main creature collided with another at original size
+                // Thus just increment currentShrinkStep; closer to death.
+                currentShrinkStep++;
+            }
+            else
+            {
+                // The main creature must be bigger than original and still has lives. 
+                // Just shrink.
+                currentShrinkStep++;
+                Vector3 scaleBy = currentShrinkStep * shrinkAmount;
+                Vector3 scaleTo = originalSize + scaleBy;
+                transform.localScale = scaleTo;
+            }
+
         }
     }
-
 
 
 }
