@@ -82,19 +82,19 @@ public class CreatureScript : MonoBehaviour
 
             Vector3 pos = transform.position;
 
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.UpArrow) && pos.z < 4.75)
             {
                 pos.z += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeyCode.DownArrow) && pos.z > -4.75)
             {
                 pos.z -= speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (Input.GetKey(KeyCode.RightArrow) && pos.x < 9.75)
             {
                 pos.x += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow) && pos.x > -9.75)
             {
                 pos.x -= speed * Time.deltaTime;
             }
