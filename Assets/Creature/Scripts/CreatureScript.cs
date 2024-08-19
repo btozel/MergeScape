@@ -41,7 +41,7 @@ public class CreatureScript : MonoBehaviour
         }
         else
         {
-            speed = 1.5f;
+            speed = 2f;
         }
     }
 
@@ -162,6 +162,7 @@ public class CreatureScript : MonoBehaviour
         if (IsMainCreature)
         {
            numberOfLives--;
+           currentGrowthStep = (int)Math.Round(currentGrowthStep * 0.66f);
 
             if (numberOfLives == 0)
             {
