@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.EventSystems;
+
 
 public class CreatureCreationScript : MonoBehaviour
 {
