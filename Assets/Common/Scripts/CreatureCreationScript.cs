@@ -27,6 +27,9 @@ public class CreatureCreationScript : MonoBehaviour
     public Dictionary<string, int> creaturesTable = new();
 
     public static Action<GameObject> MainCreatureCollided;
+
+    public static Action MainCreatureCollidedWithAlien;
+
     public static Action<int> MainCreatureLiveCountUpdateEvent;
 
     public static Action GameOverEvent;
@@ -37,6 +40,9 @@ public class CreatureCreationScript : MonoBehaviour
 
     private bool isGameOver = false;
 
+    public AudioClip growAudio;
+    public AudioClip shrinkAudio;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +50,7 @@ public class CreatureCreationScript : MonoBehaviour
         scoreText = score.GetComponent<TMP_Text>();
         MainCreatureCollided += HandleMainCreatureCollision;
         MainCreatureLiveCountUpdateEvent += MainCreatureLiveCountUpdate;
+        MainCreatureCollidedWithAlien += HandleMainCreatureCollidedWithAlien;
         GameOverEvent += GameOver;
         CreateCreatures();
         CreateMainCreature();
@@ -140,6 +147,8 @@ public class CreatureCreationScript : MonoBehaviour
     {
         RemoveCreatureFromGame(collidedCreature);
         ChangeToAnotherCreature();
+        GetComponent<AudioSource>().clip = growAudio;
+        GetComponent<AudioSource>().Play();
         AddToScore(pointsPerMerge);
     }
 
@@ -165,6 +174,13 @@ public class CreatureCreationScript : MonoBehaviour
     private void MainCreatureLiveCountUpdate(int remainingLives)
     {
         livesText.text = $"Lives: {remainingLives}";
+    }
+
+
+    private void HandleMainCreatureCollidedWithAlien()
+    {
+        GetComponent<AudioSource>().clip = shrinkAudio;
+        GetComponent<AudioSource>().Play();
     }
 
 
