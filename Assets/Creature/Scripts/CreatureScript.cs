@@ -54,9 +54,10 @@ public class CreatureScript : MonoBehaviour
 
     void Update()
     {
-        if(numberOfLives == 0)
+        if (numberOfLives == 0)
         {
-            if(IsMainCreature){
+            if (IsMainCreature)
+            {
                 transform.Rotate(Vector3.up * Time.deltaTime * 400f);
             }
             return;
@@ -64,10 +65,21 @@ public class CreatureScript : MonoBehaviour
 
         if (!IsMainCreature)
         {
-            if ((transform.position.x <= -9.5 || transform.position.x >= 9.5) || (transform.position.z <= -4.5 || transform.position.z >= 4.5))
+            if (transform.position.x <= -9.5)
             {
-                Redirect();
-                Move();
+                ReflectMovementVector(Vector3.right);
+            }
+            else if (transform.position.x >= 9.5)
+            {
+                ReflectMovementVector(Vector3.left);
+            }
+            else if (transform.position.z <= -4.5)
+            {
+                ReflectMovementVector(Vector3.forward);
+            }
+            else if (transform.position.z >= 4.5)
+            {
+                ReflectMovementVector(Vector3.back);
             }
             else if (elapsedTime < duration)
             {
@@ -76,17 +88,18 @@ public class CreatureScript : MonoBehaviour
             else
             {
                 Redirect();
-            }            
+            }
         }
         else
         {
-            if(isInImmunity)
+            if (isInImmunity)
             {
-                if(immunityTimeSpan <= 0f)
+                if (immunityTimeSpan <= 0f)
                 {
                     immunityTimeSpan = 3f;
                     isInImmunity = false;
-                }else
+                }
+                else
                 {
                     immunityTimeSpan -= Time.deltaTime;
                 }
@@ -96,19 +109,19 @@ public class CreatureScript : MonoBehaviour
 
             Vector3 bounds = GetComponent<Renderer>().bounds.size;
 
-            if (Input.GetKey(KeyCode.UpArrow) && pos.z < arenaBound.z/2f - bounds.z/2f)
+            if (Input.GetKey(KeyCode.UpArrow) && pos.z < arenaBound.z / 2f - bounds.z / 2f)
             {
                 pos.z += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.DownArrow) && pos.z > -arenaBound.z/2f + bounds.z/2f)
+            if (Input.GetKey(KeyCode.DownArrow) && pos.z > -arenaBound.z / 2f + bounds.z / 2f)
             {
                 pos.z -= speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.RightArrow) && pos.x < arenaBound.x/2f - bounds.z/2f)
+            if (Input.GetKey(KeyCode.RightArrow) && pos.x < arenaBound.x / 2f - bounds.z / 2f)
             {
                 pos.x += speed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.LeftArrow) && pos.x > -arenaBound.x/2f + bounds.z/2f)
+            if (Input.GetKey(KeyCode.LeftArrow) && pos.x > -arenaBound.x / 2f + bounds.z / 2f)
             {
                 pos.x -= speed * Time.deltaTime;
             }
@@ -117,9 +130,10 @@ public class CreatureScript : MonoBehaviour
         }
     }
 
-    public void SetArenaBounds(Vector3 arenaVector3){
+    public void SetArenaBounds(Vector3 arenaVector3)
+    {
         arenaBound = arenaVector3;
-    } 
+    }
 
 
     void OnTriggerEnter(Collider other)
@@ -133,11 +147,11 @@ public class CreatureScript : MonoBehaviour
             }
             else
             {
-                if(!isInImmunity)
+                if (!isInImmunity)
                 {
                     CreatureCreationScript.MainCreatureCollidedWithAlien.Invoke();
                     GetSmaller();
-                    isInImmunity = true;            
+                    isInImmunity = true;
                 }
             }
         }
@@ -150,14 +164,22 @@ public class CreatureScript : MonoBehaviour
     }
 
 
-    void Redirect()
+    private void ReflectMovementVector(Vector3 reflectNormal)
+    {
+        direction = Vector3.Reflect(direction, reflectNormal);
+        elapsedTime = 0f;
+        Move();
+    }
+
+
+    private void Redirect()
     {
         direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
         elapsedTime = 0f;
     }
 
 
-    void Move()
+    private void Move()
     {
         transform.position += direction * speed * Time.deltaTime;
         elapsedTime += Time.deltaTime;
@@ -180,8 +202,8 @@ public class CreatureScript : MonoBehaviour
     {
         if (IsMainCreature)
         {
-           numberOfLives--;
-           currentGrowthStep = (int)Math.Round(currentGrowthStep * 0.66f);
+            numberOfLives--;
+            currentGrowthStep = (int)Math.Round(currentGrowthStep * 0.66f);
 
             if (numberOfLives == 0)
             {
@@ -195,7 +217,7 @@ public class CreatureScript : MonoBehaviour
                 // Just shrink.
                 Vector3 scaleBy;
                 Vector3 twoThirds = new(transform.localScale.x * .66f, transform.localScale.y, transform.localScale.z * 0.66f);
-                if(twoThirds.x < originalSize.x)
+                if (twoThirds.x < originalSize.x)
                 {
                     scaleBy = originalSize;
                 }
@@ -211,6 +233,5 @@ public class CreatureScript : MonoBehaviour
 
         }
     }
-
 
 }
