@@ -137,6 +137,7 @@ public class CreatureScript : MonoBehaviour
             {
                 if(!isInImmunity)
                 {
+                    CreatureCreationScript.MainCreatureCollidedWithAlien.Invoke();
                     GetSmaller();
                     isInImmunity = true;            
                 }
