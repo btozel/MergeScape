@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CreatureCreationScript : MonoBehaviour
@@ -32,6 +33,8 @@ public class CreatureCreationScript : MonoBehaviour
 
     public static Action<int> MainCreatureLiveCountUpdateEvent;
 
+    public static Action<Boolean> FlashLiveCountUpdateEvent;
+
     public static Action GameOverEvent;
 
     private GameObject mainCreature;
@@ -51,6 +54,7 @@ public class CreatureCreationScript : MonoBehaviour
         MainCreatureCollided += HandleMainCreatureCollision;
         MainCreatureLiveCountUpdateEvent += MainCreatureLiveCountUpdate;
         MainCreatureCollidedWithAlien += HandleMainCreatureCollidedWithAlien;
+        FlashLiveCountUpdateEvent += FlashLive;
         GameOverEvent += GameOver;
         CreateCreatures();
         CreateMainCreature();
@@ -174,6 +178,14 @@ public class CreatureCreationScript : MonoBehaviour
     private void MainCreatureLiveCountUpdate(int remainingLives)
     {
         livesText.text = $"Lives: {remainingLives}";
+    }
+
+    private void FlashLive(Boolean immunity){
+        if(immunity){
+            livesText.GetComponent<MeshRenderer>().enabled = false;
+        }else{
+            livesText.GetComponent<MeshRenderer>().enabled = true;
+        }
     }
 
 

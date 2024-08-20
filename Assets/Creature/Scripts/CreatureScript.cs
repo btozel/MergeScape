@@ -31,6 +31,8 @@ public class CreatureScript : MonoBehaviour
     private float immunityTimeSpan = 2f;
     private bool isInImmunity = true;
 
+    private bool isOnFlash = true;
+
     public GameObject birthAnimation;
 
 
@@ -43,9 +45,11 @@ public class CreatureScript : MonoBehaviour
             direction = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
 
             CreatureCreationScript.MainCreatureLiveCountUpdateEvent.Invoke(numberOfLives);
+            
         }
         else
         {
+            CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
             birthAnimation.SetActive(true);
             speed = 2f;
         }
@@ -96,11 +100,73 @@ public class CreatureScript : MonoBehaviour
             {
                 if (immunityTimeSpan <= 0f)
                 {
+                    GetComponent<MeshRenderer>().enabled = true;
                     immunityTimeSpan = 3f;
                     isInImmunity = false;
                 }
                 else
-                {
+                {   
+                    if(immunityTimeSpan >= 2.8f && immunityTimeSpan < 3.0f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                        isOnFlash = true;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 2.6f && immunityTimeSpan < 2.8f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                        isOnFlash = false;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 2.4f && immunityTimeSpan < 2.6f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                        isOnFlash = true;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 2.2f && immunityTimeSpan < 2.4f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                        isOnFlash = false;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 2.0f && immunityTimeSpan < 2.2f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                        isOnFlash = true;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 1.9f && immunityTimeSpan < 2.0f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                        isOnFlash = false;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
+                    }
+                    if(immunityTimeSpan >= 1.8f && immunityTimeSpan < 1.9f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    if(immunityTimeSpan >= 1.6f && immunityTimeSpan < 1.8f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    if(immunityTimeSpan >= 1.4f && immunityTimeSpan < 1.6f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    if(immunityTimeSpan >= 1.2f && immunityTimeSpan < 1.4f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    if(immunityTimeSpan >= 1.0f && immunityTimeSpan < 1.2f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    if(immunityTimeSpan >= 0.8f && immunityTimeSpan < 1.0f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    if(immunityTimeSpan >= 0.6f && immunityTimeSpan < 0.8f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    if(immunityTimeSpan >= 0.4f && immunityTimeSpan < 0.6f){
+                        GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    if(immunityTimeSpan >= 0.2f && immunityTimeSpan < 0.4f){
+                        GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    if(immunityTimeSpan >= 0.0f && immunityTimeSpan < 0.2f){
+                        GetComponent<MeshRenderer>().enabled = true;
+
+                    }
                     immunityTimeSpan -= Time.deltaTime;
                 }
             }

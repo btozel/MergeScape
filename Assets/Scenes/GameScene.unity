@@ -418,6 +418,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1715301474803619983, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1715301474803619983, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -1062,6 +1066,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1678473820464481422, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678473820464481422, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
       propertyPath: m_fontSize
       value: 4
       objectReference: {fileID: 0}
@@ -1096,6 +1104,10 @@ PrefabInstance:
     - target: {fileID: 1678473820464481422, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1715301474803619983, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1715301474803619983, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1184,6 +1196,10 @@ PrefabInstance:
     - target: {fileID: 8332647097107109610, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
       propertyPath: m_Name
       value: Score
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332647097107109610, guid: cfb792f4992634bd5b6f5a450586f9d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
