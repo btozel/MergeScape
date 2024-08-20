@@ -82,12 +82,10 @@ public class CreatureScript : MonoBehaviour
         {
             if(isInImmunity)
             {
-                Debug.Log("In immunity");
                 if(immunityTimeSpan <= 0f)
                 {
                     immunityTimeSpan = 3f;
                     isInImmunity = false;
-                    Debug.Log("Not In immunity");
                 }else
                 {
                     immunityTimeSpan -= Time.deltaTime;
