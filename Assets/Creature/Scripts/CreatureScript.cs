@@ -138,9 +138,13 @@ public class CreatureScript : MonoBehaviour
                     }
                     if(immunityTimeSpan >= 1.8f && immunityTimeSpan < 1.9f){
                         GetComponent<MeshRenderer>().enabled = false;
+                        isOnFlash = true;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
                     }
                     if(immunityTimeSpan >= 1.6f && immunityTimeSpan < 1.8f){
                         GetComponent<MeshRenderer>().enabled = true;
+                        isOnFlash = false;
+                        CreatureCreationScript.FlashLiveCountUpdateEvent.Invoke(isOnFlash);
                     }
                     if(immunityTimeSpan >= 1.4f && immunityTimeSpan < 1.6f){
                         GetComponent<MeshRenderer>().enabled = false;
