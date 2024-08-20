@@ -19,6 +19,10 @@ public class CreatureCreationScript : MonoBehaviour
 
     public TMP_Text livesText;
 
+    public GameObject finalScoreGO;
+
+    public TMP_Text finalScoreText;
+
     public GameObject gameOverText;
 
     private readonly int numberOfCreatures = 40;
@@ -215,6 +219,8 @@ public class CreatureCreationScript : MonoBehaviour
     {
         isGameOver = true;
         gameOverText.SetActive(true);
+        finalScoreText.text = $"Score {scoreText.text}";
+        finalScoreGO.SetActive(true);
     }
 
 
