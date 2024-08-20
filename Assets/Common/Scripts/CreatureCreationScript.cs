@@ -23,7 +23,9 @@ public class CreatureCreationScript : MonoBehaviour
 
     public TMP_Text finalScoreText;
 
-    public GameObject gameOverText;
+    public GameObject gameOverGO;
+
+    public TMP_Text gameOverText;
 
     private readonly int numberOfCreatures = 40;
 
@@ -154,6 +156,12 @@ public class CreatureCreationScript : MonoBehaviour
     private void HandleMainCreatureCollision(GameObject collidedCreature)
     {
         RemoveCreatureFromGame(collidedCreature);
+
+        if(creaturesTable.Count == 0)
+        {
+            YouWin();
+        }
+
         ChangeToAnotherCreature();
         GetComponent<AudioSource>().clip = growAudio;
         GetComponent<AudioSource>().Play();
@@ -218,7 +226,17 @@ public class CreatureCreationScript : MonoBehaviour
     private void GameOver()
     {
         isGameOver = true;
-        gameOverText.SetActive(true);
+        gameOverGO.SetActive(true);
+        finalScoreText.text = $"Score {scoreText.text}";
+        finalScoreGO.SetActive(true);
+    }
+
+
+    private void YouWin()
+    {
+        isGameOver = true;
+        gameOverText.text = "YOU WON!";
+        gameOverGO.SetActive(true);
         finalScoreText.text = $"Score {scoreText.text}";
         finalScoreGO.SetActive(true);
     }
